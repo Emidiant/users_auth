@@ -33,17 +33,3 @@ class WriteOnlyUserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
-
-
-#
-# class CustomUserCreationForm(UserCreationForm):
-#
-#     class Meta(UserCreationForm):
-#         model = User
-#         fields = ('username', 'email')
-#
-# class CustomUserChangeForm(UserChangeForm):
-#
-#     class Meta:
-#         model = User
-#         fields = ('username', 'email')
