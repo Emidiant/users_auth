@@ -1,11 +1,7 @@
-from django.urls import path, include
+from django.urls import path
 from . import views
 
-user_patterns = ([
-    path('<int:id>/', views.users_list, name='detail'),
-    path('', views.users_list, name='list'),
-], 'users')
-
 urlpatterns = [
-    path('users/', include(user_patterns)),
+    path('users/', views.UsersList.as_view(), name='users_list'),
+    path('users/<int:id>/', views.UsersDetail.as_view(), name='users_detail')
 ]
