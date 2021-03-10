@@ -7,13 +7,16 @@ from .serializers import ReadOnlyUserSerializer, WriteOnlyUserSerializer
 
 
 class UsersList(APIView):
+    """ This view allows you to display information about users and add a new one """
 
     def get(self, request):
+        """ Getting a list of users """
         users = User.objects.all()
         serializer = ReadOnlyUserSerializer(users, many=True)
         return Response(serializer.data)
 
     def post(self, request):
+        """ Creating a new user """
         serializer = WriteOnlyUserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -24,6 +27,7 @@ class UsersList(APIView):
 
 
 class UsersDetail(APIView):
+    """ This view allows to display information knowing the user ID, edit and delete it """
 
     def get_object(self, id):
         try:
@@ -32,12 +36,13 @@ class UsersDetail(APIView):
             raise Http404
 
     def get(self, request, id):
+        """ Getting user object by id """
         user = self.get_object(id)
         serializer = ReadOnlyUserSerializer(user)
         return Response(serializer.data)
 
     def put(self, request, id):
-        print('put')
+        """ Putting user by id """
         user = self.get_object(id)
         serializer = WriteOnlyUserSerializer(user, data=request.data, partial=False)
         if serializer.is_valid():
@@ -48,7 +53,7 @@ class UsersDetail(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request, id):
-        print('patch')
+        """ Patching user by id """
         user = self.get_object(id)
         serializer = WriteOnlyUserSerializer(user, data=request.data)
         if serializer.is_valid():
@@ -59,6 +64,7 @@ class UsersDetail(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id):
+        """ Deleting user by id """
         user = self.get_object(id)
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
